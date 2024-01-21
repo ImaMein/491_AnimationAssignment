@@ -1,0 +1,30 @@
+class Animator{
+    constructor(spritesheet, xStart, yStart, width, height, frameCount, frameDuration) {
+        Object.assign(this, {spritesheet, xStart, yStart, width, height, frameCount, frameDuration}) //copies down all of the parameters into the object
+
+        this.elapsedTime = 0;
+        this.totalTime = frameCount * frameDuration;
+    };
+
+    drawFrame(tick, ctx, x, y) {
+
+        this.elapsedTime += tick;
+        if (this.elapsedTime > this.totalTime) this.elapsedTime -= this.totalTime;
+        const frame = this.currentFrame();
+
+        ctx.drawImage(this.spritesheet,
+            this.xStart + this.width*frame, this.yStart, //where on the spritesheet where we want to draw from
+            this.width, this.height, //How big of a frame are we grabbing
+            x, y, // what was just passed in
+            this.width * 2.5, this.height * 2.5); 
+    };
+
+    currentFrame(){
+        return Math.floor(this.elapsedTime / this.frameDuration)
+    };
+
+    isDone(){
+        return(this.elapsedTime >= this.totalTime)
+    };
+
+};
